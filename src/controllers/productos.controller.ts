@@ -16,3 +16,12 @@ function serializar(producto: Producto) {
 export function listarProductos(_req: Request, res: Response): void {
   res.json(service.listar().map(serializar));
 }
+
+export function obtenerProducto(req: Request, res: Response): void {
+  const producto = service.obtenerPorId(Number(req.params.id));
+  if (!producto) {
+    res.status(404).json({ error: "Producto no encontrado" });
+    return;
+  }
+  res.json(serializar(producto));
+}
