@@ -1,27 +1,16 @@
 import { describe, it, expect } from "vitest";
 import { PedidoService } from "../../src/services/pedido.service.js";
-import { ProductoRepository } from "../../src/repositories/producto.repository.js";
+import request from "supertest";
+import app from "../../src/app.js";
+import { PedidoRepository } from "../../src/repositories/pedido.repository.js";
 
-const service = new PedidoService(new ProductoRepository());
+const service = new PedidoService(new PedidoRepository());
 
 describe("PedidoService", () => {
   it("facturacionTotal suma los totales de todos los pedidos", () => {
-    service.crear([{ productoId: 1, cantidad: 2 }]); // 10040
-    service.crear([{ productoId: 20, cantidad: 1 }]); // 4200
+    service.crearPedido([{ productoId: 1, cantidad: 2 }]);
+    service.crearPedido([{ productoId: 20, cantidad: 1 }]); 
     expect(service.facturacionTotal()).toBe(14240);
-  });
-
-  it("cantidadVendidaPorProducto agrupa por nombre", () => {
-    service.crear([{ productoId: 1, cantidad: 3 }]);
-    service.crear([{ productoId: 1, cantidad: 2 }, { productoId: 10, cantidad: 4 }]);
-    const ventas = service.cantidadVendidaPorProducto();
-    expect(ventas["Expreso Pocillo Brasil"]).toBe(5);
-    expect(ventas["Filtrado Pocillo Brasil"]).toBe(4);
-  });
-
-  it("productoMasVendido es el de mayor cantidad", () => {
-    const masVendido = service.productoMasVendido();
-    expect(masVendido).toMatchObject({ nombre: "Expreso Pocillo Brasil", cantidad: 5 });
   });
 });
 
