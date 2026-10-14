@@ -1,8 +1,8 @@
 import type { Producto } from "../models/producto.js";
-import { ProductoRepository } from "../repositories/producto.repository.js";
+import { ProductoRepository, productoRepository } from "../repositories/producto.repository.js";
 
 export class ProductoService {
-  constructor(private readonly repository: ProductoRepository = new ProductoRepository()) {}
+  constructor(private readonly repository: ProductoRepository = productoRepository) {}
 
   listar(): Producto[] {
     return this.repository.getAll();
@@ -12,3 +12,5 @@ export class ProductoService {
     return this.repository.getById(id);
   }
 }
+
+export const productoService = new ProductoService();

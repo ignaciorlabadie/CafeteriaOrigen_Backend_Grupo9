@@ -5,10 +5,12 @@ export class ProductoRepository {
   private readonly productos: Producto[] = crearMenu();
 
   getAll(): Producto[] {
-    return this.productos;
+    return [...this.productos];
   }
 
   getById(id: number): Producto | undefined {
     return this.productos.find((producto) => producto.id === id);
   }
 }
+
+export const productoRepository = new ProductoRepository();
