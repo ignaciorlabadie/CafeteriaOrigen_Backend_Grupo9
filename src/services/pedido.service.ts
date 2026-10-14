@@ -1,10 +1,10 @@
 import type { ItemPedido } from "../models/itemPedido.js";
 import type { Pedido } from "../models/pedido.js";
 import { PedidoRepository } from "../repositories/pedido.repository.js";
-import { ProductoRepository } from "../repositories/producto.repository.js";
+import { productoRepository } from "../repositories/producto.repository.js";
 
 export class PedidoService {
-  private readonly productoRepository = new ProductoRepository();
+  private readonly productos = productoRepository;
 
   constructor(private readonly repository: PedidoRepository = new PedidoRepository()) {}
 
@@ -19,7 +19,7 @@ export class PedidoService {
       if (!Number.isInteger(item.cantidad) || item.cantidad <= 0) {
         throw new Error("La cantidad debe ser un numero entero mayor a 0");
       }
-      if (!this.productoRepository.getById(item.productoId)) {
+      if (!this.productos.getById(item.productoId)) {
         throw new Error("Producto no encontrado");
       }
     }
@@ -38,7 +38,7 @@ export class PedidoService {
     return pedido.items.reduce(
       (total, item) =>
         total +
-        (this.productoRepository.getById(item.productoId)?.calcularPrecio() ?? 0) *
+        (this.productos.getById(item.productoId)?.calcularPrecio() ?? 0) *
           item.cantidad,
       0,
     );
@@ -55,7 +55,7 @@ export class PedidoService {
     const ventas: Record<string, number> = {};
     for (const pedido of this.pedidosVigentes()) {
       for (const item of pedido.items) {
-        const producto = this.productoRepository.getById(item.productoId);
+        const producto = this.productos.getById(item.productoId);
         if (!producto) continue;
         ventas[producto.nombre] = (ventas[producto.nombre] ?? 0) + item.cantidad;
       }
