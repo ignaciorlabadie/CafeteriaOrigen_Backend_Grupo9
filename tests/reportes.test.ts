@@ -60,4 +60,15 @@ describe("Módulo de Reportes y Métricas - Tests", () => {
     });
   });
 
+  describe("Pruebas E2E", () => {
+    it("debe verificar la respuesta de los endpoints de reportes en el flujo general", async () => {
+      const resFacturacion = await request(app).get("/reportes/facturacion");
+      expect(resFacturacion.status).toBe(200);
+
+      const resMasVendido = await request(app).get("/reportes/mas-vendido");
+      expect(resMasVendido.status).toBe(200);
+      expect(resMasVendido.body).toBeDefined();
+    });
+  });
+
 });
