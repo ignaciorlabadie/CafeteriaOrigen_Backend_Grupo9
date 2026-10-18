@@ -10,4 +10,10 @@ app.use("/productos", productosRouter);
 app.use("/pedidos", pedidosRouter);
 app.use("/reportes", reportesRouter);
 
+app.get("/", (_req, res) => {
+  res.status(200).json({
+    mensaje: "API de Cafetería Origen",
+  });
+});
+
 export default app;
